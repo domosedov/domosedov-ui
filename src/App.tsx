@@ -1,90 +1,32 @@
 import * as React from "react";
-import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
-import { ChevronDownIcon } from "./shared/ui/icons/outline";
+import { Accordion } from "./components/accordion";
 
-const accordionVariants: Variants = {
-  open: { height: "auto" },
-  closed: { height: 0 },
-};
-
-const items = {
-  key1: "Content 1",
-  key2: "Content 2",
-  key3: "Content 3",
-} as const;
-
-type ItemKey = keyof typeof items;
+const menuItems = ["test1", "test2", "test3"];
 
 const App: React.FC = () => {
-  const [currentKeys, setCurrentKeys] = React.useState<ItemKey[]>(["key1"]);
-  const changeValue = React.useCallback(
-    (value: ItemKey[]) => setCurrentKeys(value),
-    []
-  );
+  const [currentIndex, setCurrentIndex] = React.useState(0);
   return (
     <div className="container mx-auto">
-      {/* <AccordionPrimitive.Root
-        type="single"
-        value={currentKey}
-        onValueChange={changeValue}
-      >
-        {Object.entries(items).map(([key, content]) => (
-          <AccordionPrimitive.Item key={key} value={key}>
-            <AccordionPrimitive.Header>
-              <AccordionPrimitive.Trigger className="group border w-full flex items-center justify-between">
-                <span>{key}</span>
-                <ChevronDownIcon className="w-6 h-6 will-change-transform transform duration-200 group-radix-state-open:rotate-180" />
-              </AccordionPrimitive.Trigger>
-              <AnimatePresence>
-                {currentKey === key && (
-                  <AccordionPrimitive.Content asChild forceMount>
-                    <motion.div
-                      className="overflow-hidden"
-                      initial={{ height: 0 }}
-                      animate={{ height: "auto" }}
-                      exit={{ height: 0 }}
-                    >
-                      {content}
-                    </motion.div>
-                  </AccordionPrimitive.Content>
-                )}
-              </AnimatePresence>
-            </AccordionPrimitive.Header>
-          </AccordionPrimitive.Item>
+      <Accordion />
+      <div className="flex items-center space-x-2 mt-10">
+        {menuItems.map((item, index) => (
+          <div
+            onClick={() => setCurrentIndex(index)}
+            className="px-4 py-2 bg-teal-100 relative"
+            key={item}
+          >
+            <span>{item}</span>
+            {currentIndex === index ? (
+              <motion.div
+                transition={{ duration: 0.2 }}
+                layoutId="underline"
+                className="h-0.5 absolute -bottom-px left-0 right-0 bg-fuchsia-300"
+              />
+            ) : null}
+          </div>
         ))}
-      </AccordionPrimitive.Root> */}
-      <AccordionPrimitive.Root
-        type="multiple"
-        value={currentKeys}
-        onValueChange={changeValue}
-      >
-        {Object.entries(items).map(([key, content]) => (
-          <AccordionPrimitive.Item key={key} value={key}>
-            <AccordionPrimitive.Header>
-              <AccordionPrimitive.Trigger className="group border w-full flex items-center justify-between">
-                <span>{key}</span>
-                <ChevronDownIcon className="w-6 h-6 will-change-transform transform duration-200 group-radix-state-open:rotate-180" />
-              </AccordionPrimitive.Trigger>
-              <AnimatePresence>
-                {currentKeys.includes(key as ItemKey) && (
-                  <AccordionPrimitive.Content asChild forceMount>
-                    <motion.div
-                      className="overflow-hidden"
-                      variants={accordionVariants}
-                      initial="closed"
-                      animate="open"
-                      exit="closed"
-                    >
-                      <div className="p-4 bg-slate-100">{content}</div>
-                    </motion.div>
-                  </AccordionPrimitive.Content>
-                )}
-              </AnimatePresence>
-            </AccordionPrimitive.Header>
-          </AccordionPrimitive.Item>
-        ))}
-      </AccordionPrimitive.Root>
+      </div>
     </div>
   );
 };
