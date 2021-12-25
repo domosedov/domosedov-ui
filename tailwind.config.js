@@ -15,6 +15,8 @@ module.exports = {
       addVariant("is-valid", '&[data-is-invalid="false"]');
       addVariant("is-invalid", '&[data-is-invalid="true"]');
       addVariant("is-loading", '&[data-is-loading="true"]');
+      addVariant("is-active", '&[data-is-active="true"]');
+      addVariant("is-selected", '&[data-is-selected="true"]');
     }),
   ],
 };
