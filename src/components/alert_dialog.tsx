@@ -60,6 +60,7 @@ type AlertDialogRef = {
 
 const AlertDialog = React.forwardRef<AlertDialogRef, AlertDialogProps>(
   ({ trigger, children, title, description, action, cancel }, forwardedRef) => {
+    console.log(title);
     const [isOpen, setIsOpen] = React.useState(false);
     const open = React.useCallback(() => setIsOpen(true), []);
     const close = React.useCallback(() => setIsOpen(false), []);
