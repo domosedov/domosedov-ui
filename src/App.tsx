@@ -1,18 +1,20 @@
 import * as React from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Navbar } from "./widgets/navbar";
+import { Player } from "./components/player";
 
 const App: React.FC = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const close = React.useCallback(() => setIsOpen(false), []);
-  const open = React.useCallback(() => setIsOpen(true), []);
   const toggle = React.useCallback(() => setIsOpen(!isOpen), [isOpen]);
-  const contentRef = React.useRef<HTMLDivElement>(null);
-  const [drag, setDrag] = React.useState<"y" | false>("y");
-  const disableDrag = React.useCallback(() => setDrag(false), []);
-  const enableDrag = React.useCallback(() => setDrag("y"), []);
+
   return (
     <div className="container mx-auto">
+      <header>
+        <Navbar />
+      </header>
       <h1>Home page</h1>
+      <Player />
       <button onClick={toggle}>Close</button>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, maxime
@@ -24,16 +26,6 @@ const App: React.FC = () => {
         {isOpen && (
           <motion.div
             key="modal"
-            onPanStart={(event, info) => {
-              if (event.target === contentRef.current) {
-                event.preventDefault();
-                console.log("ffsd");
-                disableDrag();
-                return;
-              } else {
-                enableDrag();
-              }
-            }}
             onPanEnd={(event, info) => {
               console.log(event);
               if (info.offset.y > 200) {
@@ -41,16 +33,15 @@ const App: React.FC = () => {
               }
               console.log(info);
             }}
-            drag={drag}
+            drag="y"
             dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }}
             dragElastic={0.5}
-            dragPropagation={false}
             initial={{ y: 300 }}
             animate={{ y: 0, transition: { duration: 0.15, ease: "linear" } }}
-            exit={{ y: 1000, transition: { duration: 0.3, ease: "easeOut" } }}
+            exit={{ y: 1000, transition: { duration: 0.75, ease: "easeOut" } }}
             className="bg-slate-400 fixed left-0 right-0 bottom-0 top-16 p-5"
           >
-            <div ref={contentRef} className="bg-red-300">
+            <div className="bg-red-300 landscape:bg-green-200">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus,
               repellendus ducimus est at qui autem quibusdam earum assumenda
               numquam reprehenderit fuga cum ullam quam dolores mollitia harum
